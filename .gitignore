@@ -1,0 +1,6 @@
+venv*
+
+data
+
+*.net.xml
+*.osm.xml
