@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class TEDADetect:
     """Class used to detect outliers on the data"""
     # ------------------------------

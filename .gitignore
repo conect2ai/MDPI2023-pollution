@@ -1,6 +1,7 @@
 venv*
 
 data
+cache
 
 *.net.xml
 *.osm.xml
