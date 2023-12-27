@@ -84,7 +84,6 @@ def routeplot(df: pd.DataFrame, column: str, color_list: list = None, intervals:
   
     polilyne  = folium.PolyLine(points, color="red").add_to(route_map)
 
-    column_values = df[column]
     points_column = polilyne.locations
 
     colors = column_to_colors(df[column], color_list, intervals)

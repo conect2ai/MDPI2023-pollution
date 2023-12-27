@@ -20,6 +20,43 @@ def get_list_paths(path: str) -> list:
 
     return [path + file for file in os.listdir(path) if ".csv" in file]
 
+def get_week_day(path: str) -> str:
+  start_index = path.rfind('_') + 1
+  end_index   = path.rfind('.csv')
+
+  week_day = path[start_index:end_index].upper()
+
+  return week_day
+
+def get_data_info(path: str) -> pd.DataFrame:
+  data_info = pd.DataFrame()
+
+  for path in get_list_paths(path):
+    data = pd.read_csv(path)
+
+    new_row = pd.DataFrame({
+      "PATH":     path,
+      "WEEK_DAY": get_week_day(path),
+      "ROWS": data.shape[0]
+    }, index=[0])
+
+    data_info = pd.concat([data_info, new_row], ignore_index=True)
+
+  return data_info
+
+def select_by_similarity(l1: list, l2: list) -> list:
+  result = []
+
+  for v1 in l1:
+    for v2 in l2:
+      if len(result) == 0 or abs(v1 - v2) < diff:
+        result = [v1, v2]
+        diff   = abs(v1 - v2)
+
+  print(f"Differece: {diff}")
+  
+  return result
+
 def read_all_data(list_paths: list) -> pd.DataFrame:
     """
     Read all the data with .csv extension from the list of paths and return a list of dataframes.
@@ -89,23 +126,3 @@ def compute_acceleration(df: pd.DataFrame) -> pd.DataFrame:
     """
 
     return df["Speed(OBD)(km/h)"].diff()
-
-def get_CO2(df: pd.DataFrame, fuel: str) -> pd.DataFrame:
-    if fuel == "gasoline":
-        fuel_density = 737         # (g/L)
-        emission_factor_CO2 = 2310 # (g/L)
-
-    if fuel == "ethanol":
-        fuel_density = 789         # (g/L)
-        emission_factor_CO2 = 1510 # (g/L)
-    
-    afr = df["AirFuelRatio(Commanded)(:1)"]
-    maf = df["MassAirFlowRate(g/s)"]
-
-    fuel_volume = maf / (afr * fuel_density) # (g/s) / (g/L) = (L/s
-
-
-    co2_emission = fuel_volume * emission_factor_CO2 # (L/s) * (g/L) = (g/s)
-    co2_emission = co2_emission * 1000 # (g/s) * 1000 = (mg/s)
-
-    return co2_emission
