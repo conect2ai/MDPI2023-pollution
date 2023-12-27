@@ -44,8 +44,8 @@ After that, you can run the notebooks in the following order:
 
     After conducting the initial study, more travel data were collected, expanding the base for training prediction models. As a result, we had:
 
-    - Gasoline: 112964 amostras
-    - Ethanol: 40291 amostras
+    - Gasoline: 112964 samples
+    - Ethanol: 40291 samples
 
     Prediction models were trained for the two variables (AFR and MAF) used in the calculation of CO₂ presented in the [análise inicial](./initial_analysis.ipynb). The models are saved in [models](./models).
 
